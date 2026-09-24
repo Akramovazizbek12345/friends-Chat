@@ -3,9 +3,9 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'uz.friendspace.app',
   appName: 'FRIENDSPACE',
-  webDir: '../public',
+  webDir: '..',
   server: {
-    url: 'https://YOUR-FRIENDSPACE-URL.onrender.com',
+    url: 'https://friends-chat-obei.onrender.com',
     cleartext: false
   }
 };
