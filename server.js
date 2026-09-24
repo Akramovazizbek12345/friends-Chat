@@ -68,7 +68,7 @@ app.use(express.json({limit:'1mb'}));
 const sessionOptions={secret:process.env.SESSION_SECRET||'change-this-session-secret',resave:false,saveUninitialized:false,cookie:{httpOnly:true,sameSite:'lax',secure:!!process.env.RENDER,maxAge:1000*60*60*24*30}};
 if(pool) sessionOptions.store=new connectPgSimple({pool,createTableIfMissing:true,tableName:'user_sessions'});
 app.use(session(sessionOptions));
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(__dirname));
 
 app.get('/health',(req,res)=>res.json({ok:true,service:'FRIENDSPACE',database:!!pool}));
 app.post('/api/login',(req,res)=>{const {username,password}=req.body||{};const u=db.users.find(x=>x.username===String(username||'').trim().toLowerCase());if(!u||!bcrypt.compareSync(password||'',u.password))return res.status(401).json({error:'Username yoki parol noto‘g‘ri'});req.session.user=safe(u);res.json({user:safe(u)});});
@@ -93,6 +93,6 @@ app.get('/api/groups/:id/messages',auth,(req,res)=>{const gid=Number(req.params.
 app.post('/api/groups/:id/messages',auth,async(req,res)=>{const gid=Number(req.params.id),text=String(req.body.text||'').trim();if(!member(gid,req.session.user.id))return res.status(403).json({error:'Not a member'});if(!text)return res.status(400).json({error:'Empty'});const msg={id:nextId('messages'),sender_id:req.session.user.id,group_id:gid,text,created_at:new Date().toISOString()};db.messages.push(msg);await saveDB();const out={...msg,...safeUserFields(userById(msg.sender_id))};io.to('group:'+gid).emit('group_message',out);res.json(out);});
 
 io.on('connection',socket=>{socket.on('join',uid=>{if(userById(uid))socket.join('user:'+Number(uid));});socket.on('join_group',(gid,uid)=>{if(member(gid,uid))socket.join('group:'+Number(gid));});});
-app.get('*',(req,res)=>res.sendFile(path.join(__dirname,'public','index.html')));
+app.get('*',(req,res)=>res.sendFile(path.join(__dirname,'index.html')));
 
 (async()=>{try{db=await loadDB();await ensureSeed();server.listen(PORT,HOST,()=>console.log(`FRIENDSPACE running on http://${HOST}:${PORT} | database=${!!pool}`));}catch(err){console.error(err);process.exit(1);}})();
