@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>FriendSpace</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="bg b1"></div>
+    <div class="bg b2"></div>
+    <div id="login" class="login">
+        <div class="login-card glass">
+            <div class="logo"><span>✦</span> FRIENDSPACE</div>
+            <p>Faqat bizning do‘stlarimiz uchun yopiq makon.</p>
+            <form id="loginForm"><input id="username" placeholder="Username" autocomplete="username" required><input
+                    id="password" type="password" placeholder="Password" autocomplete="current-password"
+                    required><button>Olamga kirish →</button></form><small>Admin: badbro / badbro123</small>
+        </div>
+    </div>
+    <div id="app" class="app hidden">
+        <aside class="sidebar glass">
+            <div class="brand"><span class="orb"></span><b>FRIEND<span>SPACE</span></b></div>
+            <div class="me" id="me"></div>
+            <nav><button class="nav active" data-view="home">⌂ <span>Home</span></button><button class="nav"
+                    data-view="friends">◎ <span>Friends</span></button><button class="nav" data-view="groups">◈
+                    <span>Groups</span></button><button class="nav" data-view="memories">◇
+                    <span>Memories</span></button><button class="nav admin-nav hidden" id="adminNav" data-view="admin">♛
+                    <span>Admin</span></button></nav>
+            <div class="sidebar-bottom"><button id="theme">◐ Theme</button><button id="logout">↪ Chiqish</button></div>
+        </aside>
+        <main>
+            <header class="topbar glass">
+                <div><small>PRIVATE SOCIAL</small>
+                    <h1 id="title">Home</h1>
+                </div>
+                <div class="search">⌕ <input id="search" placeholder="Qidirish..."></div><button
+                    class="icon">♡</button><button class="icon">⌁</button>
+            </header>
+            <section id="content"></section>
+        </main>
+        <aside class="right glass">
+            <div class="rtitle">Yaqinlar <span>● online</span></div>
+            <div id="online"></div>
+            <div class="tip glass"><b>✦ FriendSpace</b>
+                <p>Bu yer faqat siz va tanlangan do‘stlaringiz uchun.</p>
+            </div>
+        </aside>
+    </div>
+    <div id="modal" class="modal hidden"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
