@@ -1,4 +1,13 @@
-let me=null,current={type:null,id:null,name:null},socket=io();
+let me=null,current={type:null,id:null,name:null};
+let socket = null;
+
+try {
+  if (typeof io === "function") {
+    socket = io();
+  }
+} catch (e) {
+  console.error("Socket.IO:", e);
+}
 const $=x=>document.querySelector(x), content=$("#content");
 async function api(url,opt={}){let r=await fetch(url,{headers:{"Content-Type":"application/json"},...opt});let d=await r.json();if(!r.ok)throw new Error(d.error||"Error");return d}
 async function init(){let d=await api("/api/me");if(!d.user)return;me=d.user;$("#login").classList.add("hidden");$("#app").classList.remove("hidden");$("#me").innerHTML=`<div class="avatar">${me.avatar||me.display_name[0]}</div><b>${escapeHTML(me.display_name)}</b><small>${me.is_admin?'♛ admin':'● private account'}</small>`;if(me.is_admin)$("#adminNav").classList.remove("hidden");socket.emit("join",me.id);loadHome();loadOnline()}
