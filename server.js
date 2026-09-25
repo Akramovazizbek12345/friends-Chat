@@ -64,6 +64,7 @@ async function ensureSeed(){
 }
 
 app.disable('x-powered-by');
+app.set('trust proxy', 1);
 app.use(express.json({limit:'1mb'}));
 const sessionOptions={secret:process.env.SESSION_SECRET||'change-this-session-secret',resave:false,saveUninitialized:false,cookie:{httpOnly:true,sameSite:'lax',secure:!!process.env.RENDER,maxAge:1000*60*60*24*30}};
 if(pool) sessionOptions.store=new connectPgSimple({pool,createTableIfMissing:true,tableName:'user_sessions'});
